@@ -1,15 +1,18 @@
-let humanScore = 0;
-let computerScore = 0;
-
 function playGame() {
     let humanScore = 0;
     let computerScore = 0;
     let roundCount = 0;
 
     for (let roundCount = 1; roundCount <= 5; roundCount++) {
-        let humanChoice = getHumanChoice();
+        let humanChoice = getHumanChoice(roundCount);
         let computerChoice = getComputerChoice();
-        playRound(humanChoice, computerChoice);
+        const updatedScores = playRound(humanChoice, computerChoice, humanScore, computerScore);
+        humanScore = updatedScores.humanScore;
+        computerScore = updatedScores.computerScore;
+
+        // playRound(humanChoice, computerChoice, humanScore, computerScore);
+        // humanScore = playRound(humanScore);
+        // computerScore = playRound(computerScore);
     }
     
     if (humanScore > computerScore) {
@@ -26,7 +29,7 @@ function getComputerChoice() {
 
     if (randomNumber >= 0 && randomNumber <= (1/3)) {
         computerChoice = "rock"
-    } else if (randomNumber > 1/3 && randomNumber <= (2/3)) {
+    } else if (randomNumber > (1/3) && randomNumber <= (2/3)) {
         computerChoice = "paper"
     } else {
         computerChoice = "scissor"
@@ -36,12 +39,12 @@ function getComputerChoice() {
 }
 
 function getHumanChoice(roundCount) {
-    let humanChoice = prompt("Rock, Paper, or Scissor? Choose wisely! (Round " + roundCount);
+    let humanChoice = prompt("Rock, Paper, or Scissor? Choose wisely! (Round " + roundCount + ")");
 
     return humanChoice.toLowerCase();
 }
 
-function playRound(humanChoice, computerChoice) {
+function playRound(humanChoice, computerChoice, humanScore, computerScore) {
     if (humanChoice === computerChoice) {
         console.log("Tie, no winner this round. You both chose " + humanChoice + ".")
     } else {
@@ -72,6 +75,8 @@ function playRound(humanChoice, computerChoice) {
                 break;
         }
     }
+
+    return { humanScore, computerScore };
 }
 
 
