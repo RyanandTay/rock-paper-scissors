@@ -41,7 +41,7 @@ function getHumanChoice(roundCount) {
     return humanChoice.toLowerCase();
 }
 
-function playRound(computerChoice, humanChoice) {
+function playRound(humanChoice, computerChoice) {
     if (humanChoice === computerChoice) {
         console.log("Tie, no winner this round. You both chose " + humanChoice + ".")
     } else {
