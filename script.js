@@ -1,20 +1,26 @@
+let humanScore = 0;
+let computerScore = 0;
+let roundCount = 0;
+
 function playGame() {
-    let humanScore = 0;
-    let computerScore = 0;
-    let roundCount = 0;
-
-    for (let roundCount = 1; roundCount <= 5; roundCount++) {
-        let humanChoice = getHumanChoice(roundCount);
-        let computerChoice = getComputerChoice();
-        const updatedScores = playRound(humanChoice, computerChoice, humanScore, computerScore);
-        humanScore = updatedScores.humanScore;
-        computerScore = updatedScores.computerScore;
-
-        // playRound(humanChoice, computerChoice, humanScore, computerScore);
-        // humanScore = playRound(humanScore);
-        // computerScore = playRound(computerScore);
-    }
     
+
+    // for (let roundCount = 1; roundCount <= 5; roundCount++) {
+    //     let humanChoice = getHumanChoice(roundCount);
+    //     let computerChoice = getComputerChoice();
+    //     const updatedScores = playRound(humanChoice, computerChoice, humanScore, computerScore);
+    //     humanScore = updatedScores.humanScore;
+    //     computerScore = updatedScores.computerScore;
+    // }
+    
+    const buttonRock = document.createElement("button");
+    const buttonPaper = document.createElement("button");
+    const buttonScissor = document.createElement("button");
+
+    buttonRock.addEventListener("click", playRound);
+    buttonPaper.addEventListener("click", playRound);
+    buttonScissor.addEventListener("click", playRound);
+
     if (humanScore > computerScore) {
         console.log("Congrats, you beat the computer! The final score was: " + humanScore + " vs " + computerScore);
     } else {
