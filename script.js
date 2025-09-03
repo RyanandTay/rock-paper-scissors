@@ -1,41 +1,111 @@
 let humanScore = 0;
 let computerScore = 0;
 let roundCount = 0;
+let message;
 
-function playGame() {
-    
+document.addEventListener("DOMContentLoaded", setupListeners);
 
-    // for (let roundCount = 1; roundCount <= 5; roundCount++) {
-    //     let humanChoice = getHumanChoice(roundCount);
-    //     let computerChoice = getComputerChoice();
-    //     const updatedScores = playRound(humanChoice, computerChoice, humanScore, computerScore);
-    //     humanScore = updatedScores.humanScore;
-    //     computerScore = updatedScores.computerScore;
-    // }
-    
-    const buttonRock = document.querySelector(".buttonRock");
-    const buttonPaper = document.querySelector(".buttonPaper");
-    const buttonScissor = document.querySelector(".buttonScissor");
+const addMessage = document.querySelector(".message");
+const addScore = document.querySelector(".score");
+const addRound = document.querySelector(".round");
+const container = document.querySelector(".container");
+
+function setupListeners() {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.id = "buttonContainer";
+    container.appendChild(buttonContainer);
+    const buttonRock = document.createElement("button");
+    buttonRock.textContent = "Rock"
+    buttonContainer.appendChild(buttonRock);
+    const buttonPaper = document.createElement("button");
+    buttonPaper.textContent = "Paper"
+    buttonContainer.appendChild(buttonPaper);
+    const buttonScissor = document.createElement("button");
+    buttonScissor.textContent = "Scissor"
+    buttonContainer.appendChild(buttonScissor);
 
     buttonRock.addEventListener("click", () => {
         playRound("rock");
-        // updateRoundAndScore();
+        updateRoundAndScore();
     });
 
-    buttonPaper.addEventListener("click", playRound);
-    buttonScissor.addEventListener("click", playRound);
-    
-    if (humanScore > computerScore) {
-        console.log("Congrats, you beat the computer! The final score was: " + humanScore + " vs " + computerScore);
-    } else {
-        console.log("You lost. The final score was: " + humanScore + " vs " + computerScore);
-    }
+    buttonPaper.addEventListener("click", () => {
+        playRound("paper");
+        updateRoundAndScore();
+    });
+
+    buttonScissor.addEventListener("click", () => {
+        playRound("scissor");
+        updateRoundAndScore();
+    });
 }
 
 function updateRoundAndScore() {
-    if (roundCount > 5) {
+        roundCount++;
+        addRound.textContent = "Round: " + roundCount;
 
+    if (roundCount < 5) {
+        addScore.textContent = "You: " + humanScore + " | " + "Computer: " + computerScore;
+
+        if (message.slice(0, 4) === "Nice") {
+            addMessage.textContent = message;
+            addMessage.style.color = "green";
+        } else if (message.slice(0,4) === "Too ") {
+            addMessage.textContent = message;
+            addMessage.style.color = "red";
+        } else {
+            addMessage.textContent = message;
+            addMessage.style.color = "black";
+        }
+
+    } else if (humanScore > computerScore) {
+        message = "Congratulations! You won the game! The final score was: " + humanScore + " vs " + computerScore;
+        addMessage.textContent = message;
+        addMessage.style.cssText = "font-size: 28px; color: green";
+
+        addScore.textContent = "You: " + humanScore + " | " + "Computer: " + computerScore;
+        addScore.style.cssText = "font-size: 22px;";
+        restartGame();
+    } else if (humanScore < computerScore) {
+        message = "You lost the game. The final score was: " + humanScore + " vs " + computerScore;
+        addMessage.textContent = message;
+        addMessage.style.cssText = "font-size: 28px; color: red";
+
+        addScore.textContent = "You: " + humanScore + " | " + "Computer: " + computerScore;
+        addScore.style.cssText = "font-size: 22px";
+        restartGame();
+    } else {
+        message = "The game was a tie. The final score was: " + humanScore + " vs " + computerScore;
+        addMessage.textContent = message;
+        addMessage.style.cssText = "font-size: 28px";
+
+        addScore.textContent = "You: " + humanScore + " | " + "Computer: " + computerScore;
+        addScore.style.cssText = "font-size: 22px";
+        restartGame();
     }
+ }
+
+function restartGame() {
+    const buttonContainer = document.querySelector("#buttonContainer");
+    container.removeChild(buttonContainer);
+
+    const resetButton = document.createElement("button");
+    resetButton.textContent = "Restart"
+    container.appendChild(resetButton);
+
+    resetButton.addEventListener("click", () => {
+        container.removeChild(resetButton);
+        humanScore = 0;
+        computerScore = 0;
+        roundCount = 0;
+        setupListeners()
+        addMessage.textContent = "";
+        addMessage.style.cssText = "";
+        addRound.textContent = "";
+        addRound.style.cssText = "";
+        addScore.textContent = "";
+        addScore.style.cssText = "";
+    });
 }
 
 function getComputerChoice() {
@@ -54,47 +124,28 @@ function getComputerChoice() {
     return computerChoice;
 }
 
-function getHumanChoice(roundCount) {
-    let humanChoice = prompt("Rock, Paper, or Scissor? Choose wisely! (Round " + roundCount + ")");
-
-    return humanChoice.toLowerCase();
-}
-
 function playRound(choice) {
-    const humanChoice = choice;
+    let computerChoice = getComputerChoice();
+    let humanChoice = choice;
 
     if (humanChoice === computerChoice) {
-        console.log("Tie, no winner this round. You both chose " + humanChoice + ".")
+        message = "Tie, no winner this round. You both chose " + humanChoice + ".";
     } else {
         switch (computerChoice + "-" + humanChoice){
             case "rock-paper":
-                console.log("Congrats, your paper won!");
+            case "paper-scissor":
+            case "scissor-rock":
+                message = "Nice! your " + humanChoice + " won!";
                 humanScore++;
                 break;
             case "rock-scissor":
-                console.log("Too bad, your scissor lost.");
-                computerScore++;
-                break;
-            case "paper-scissor":
-                console.log("Congrats, your scissor won!");
-                humanScore++;
-                break;
             case "paper-rock":
-                console.log("Too bad, your rock lost.");
-                computerScore++;
-                break;
-            case "scissor-rock":
-                console.log("Congrats, your rock won!");
-                humanScore++;
-                break;
             case "scissor-paper":
-                console.log("Too bad, your paper lost.");
+                message = "Too bad, your " + humanChoice + " lost.";
                 computerScore++;
                 break;
         }
     }
-
-    return { humanScore, computerScore };
 }
 
 
