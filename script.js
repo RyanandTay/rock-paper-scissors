@@ -13,18 +13,28 @@ function playGame() {
     //     computerScore = updatedScores.computerScore;
     // }
     
-    const buttonRock = document.createElement("button");
-    const buttonPaper = document.createElement("button");
-    const buttonScissor = document.createElement("button");
+    const buttonRock = document.querySelector(".buttonRock");
+    const buttonPaper = document.querySelector(".buttonPaper");
+    const buttonScissor = document.querySelector(".buttonScissor");
 
-    buttonRock.addEventListener("click", playRound);
+    buttonRock.addEventListener("click", () => {
+        playRound("rock");
+        // updateRoundAndScore();
+    });
+
     buttonPaper.addEventListener("click", playRound);
     buttonScissor.addEventListener("click", playRound);
-
+    
     if (humanScore > computerScore) {
         console.log("Congrats, you beat the computer! The final score was: " + humanScore + " vs " + computerScore);
     } else {
         console.log("You lost. The final score was: " + humanScore + " vs " + computerScore);
+    }
+}
+
+function updateRoundAndScore() {
+    if (roundCount > 5) {
+
     }
 }
 
@@ -50,7 +60,9 @@ function getHumanChoice(roundCount) {
     return humanChoice.toLowerCase();
 }
 
-function playRound(humanChoice, computerChoice, humanScore, computerScore) {
+function playRound(choice) {
+    const humanChoice = choice;
+
     if (humanChoice === computerChoice) {
         console.log("Tie, no winner this round. You both chose " + humanChoice + ".")
     } else {
